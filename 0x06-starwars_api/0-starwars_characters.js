@@ -1,51 +1,22 @@
 #!/usr/bin/node
-/* eslint-disable semi */
 
 const request = require('request');
+const filmId = process.argv[2];
+const url = `https://swapi-api.hbtn.io/api/films/${filmId}`;
 
-const movieId = process.argv[2];
-
-if (!movieId || isNaN(movieId)) {
-  console.error('Please provide a valid Movie ID as a command-line argument.');
-  process.exit(1);
-}
-
-const apiUrl = `https://swapi.dev/api/films/${movieId}/`;
-
-request(apiUrl, (error, response, body) => {
-  if (error) {
-    console.error('Error:', error);
-    process.exit(1);
+request(url, async (err, response, body) => {
+  if (err) {
+    console.log(err);
   }
-
-  if (response.statusCode !== 200) {
-    console.error('Unexpected status code:', response.statusCode);
-    process.exit(1);
-  }
-
-  const filmData = JSON.parse(body);
-  const characters = filmData.characters;
-
-  if (!characters || characters.length === 0) {
-    console.error('No characters found for the specified Movie ID.');
-    process.exit(1);
-  }
-
-  characters.forEach((characterUrl) => {
-    request(characterUrl, (charError, charResponse, charBody) => {
-      if (charError) {
-        console.error('Error:', charError);
-        process.exit(1);
-      }
-
-      if (charResponse.statusCode !== 200) {
-        console.error('Unexpected status code:', charResponse.statusCode);
-        process.exit(1);
-      }
-
-      const characterData = JSON.parse(charBody);
-      console.log(characterData.name);
+  for (const characterId of JSON.parse(body).characters) {
+    await new Promise((resolve, reject) => {
+      request(characterId, (err, response, body) => {
+        if (err) {
+          reject(err);
+        }
+        console.log(JSON.parse(body).name);
+        resolve();
+      });
     });
-  });
+  }
 });
-
