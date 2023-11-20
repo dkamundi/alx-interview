@@ -10,13 +10,13 @@ def rotate_2d_matrix(matrix):
     Returns:
     - None: The matrix is edited in-place.
     """
-    n = len(matrix)
+    matrix_len = len(matrix)
 
-    # Transpose the matrix
-    for i in range(n):
-        for j in range(i + 1, n):
-            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
-
-    # Reverse each row
-    for i in range(n):
-        matrix[i].reverse()
+    for i in range(matrix_len // 2):
+        for j in range(i, matrix_len - 1 - i):
+            # Perform a four-way swap
+            temp = matrix[i][j]
+            matrix[i][j] = matrix[matrix_len - 1 - j][i]
+            matrix[matrix_len - 1 - j][i] = matrix[matrix_len - 1 - i][matrix_len - 1 - j]
+            matrix[matrix_len - 1 - i][matrix_len - 1 - j] = matrix[j][matrix_len - 1 - i]
+            matrix[j][matrix_len - 1 - i] = temp
