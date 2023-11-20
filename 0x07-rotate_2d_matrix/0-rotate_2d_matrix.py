@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+Rotates a 2D array by 90 degrees clockwise
+"""
+
 
 def rotate_2d_matrix(matrix):
     """
@@ -11,12 +15,8 @@ def rotate_2d_matrix(matrix):
     - None: The matrix is edited in-place.
     """
     matrix_len = len(matrix)
+    matrix_copy = [[x for x in row] for row in matrix]
 
-    for i in range(matrix_len // 2):
-        for j in range(i, matrix_len - 1 - i):
-            # Perform a four-way swap
-            temp = matrix[i][j]
-            matrix[i][j] = matrix[matrix_len - 1 - j][i]
-            matrix[matrix_len - 1 - j][i] = matrix[matrix_len - 1 - i][matrix_len - 1 - j]
-            matrix[matrix_len - 1 - i][matrix_len - 1 - j] = matrix[j][matrix_len - 1 - i]
-            matrix[j][matrix_len - 1 - i] = temp
+    for i in range(0, matrix_len):
+        for j in range(0, matrix_len):
+            matrix[j][matrix_len - 1 - i] = matrix_copy[i][j]
