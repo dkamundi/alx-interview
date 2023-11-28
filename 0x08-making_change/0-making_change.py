@@ -5,7 +5,7 @@ needed to meet a given amount total.
 """
 
 
-def makeChage(coins, total) -> int:
+def makeChange(coins, total) -> int:
     """
     Returns the fewest number of coins
     needed to meet a given amount total.
